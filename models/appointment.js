@@ -13,6 +13,15 @@ class Appointment {
     })
   }
 
+  searchById(id, res) {
+    const sql = `SELECT * FROM Appointments WHERE id=${id}`
+
+    connection.query(sql, (error, results) => {
+      const appointment = results[0];
+      error ? res.status(400).json(error) : res.status(200).json(appointment);
+    })
+  }
+  
   add(appointment, res) {
     const createdAt = moment().format('YYYY-MM-DD HH:mm:ss')
     const date = moment(appointment.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')

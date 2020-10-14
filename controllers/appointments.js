@@ -3,13 +3,14 @@ const Appointment = require('../models/appointment');
 //CONTROLLER
 
 module.exports = app => {
-  app.get('/appointments', (req, res) => {
+  app.get('/appointments', (res) => {
     Appointment.list(res);
   })
 
   app.get('/appointments/:id', (req, res) => {
-    console.log(req.params);
-    res.send('OK');
+    const id = parseInt(req.params.id);
+
+    Appointment.searchById(id, res)
   })
 
   app.post('/appointments', (req, res) => {
