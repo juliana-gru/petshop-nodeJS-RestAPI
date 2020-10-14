@@ -3,7 +3,7 @@ const Appointment = require('../models/appointment');
 //CONTROLLER
 
 module.exports = app => {
-  app.get('/appointments', (res) => {
+  app.get('/appointments', ({res}) => {
     Appointment.list(res);
   })
 
@@ -17,5 +17,18 @@ module.exports = app => {
     const appointment = req.body;
 
     Appointment.add(appointment, res);
+  })
+
+  app.patch('/appointments/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const values = req.body;
+
+    Appointment.update(id, values, res);
+  })
+
+  app.delete('/appointments/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    
+    Appointment.delete(id, res);
   })
 }

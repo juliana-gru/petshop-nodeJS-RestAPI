@@ -9,7 +9,11 @@ class Appointment {
     const sql = 'SELECT * FROM Appointments'
 
     connection.query(sql, (error, results) => {
-      error ? res.status(400).json(error) : res.status(200).json(results);
+      if (error) {
+        res.status(400).json(error);
+      } else {
+        res.status(200).json(results);
+      } 
     })
   }
 
@@ -52,9 +56,29 @@ class Appointment {
       const sql = 'INSERT INTO Appointments SET ?'
 
       connection.query(sql, datedAppointment, (error, results) => {
-        error ? res.status(400).json(error) : res.status(201).json(results)
+        error ? res.status(400).json(error) : res.status(201).json(appointment);
       })
     }    
+  }
+
+  update(id, values, res) {
+    if (values.date) {
+      values.date = moment(values.date, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
+    }
+    
+    const sql = 'UPDATE Appointments SET ? WHERE id=?'
+
+    connection.query(sql, [values, id], (error, results) => {
+      error ? res.status(400).json(error) : res.status(200).json({...values, id});
+    })
+  }
+
+  delete(id, res) {
+    const sql = 'DELETE FROM Appointments WHERE id=?'
+
+    connection.query(sql, id, (error, results) => {
+      error ? res.status(400).json(error) : res.status(200).json({id});
+    })
   }
 }
 
